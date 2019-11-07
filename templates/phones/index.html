@@ -1,0 +1,11 @@
+{% extends 'phones/layout.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for phone in phone_list %}
+        <li>{{ phone.manufacturer.title }} {{ phone.title }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
