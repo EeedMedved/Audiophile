@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Manufacturer, Phone, DAC, AudioCodec, OperatingSystemVendor, OperatingSystem
+from .models import Manufacturer, Phone, DAC, AudioCodec, OperatingSystemVendor, OperatingSystem, SoC
 
 
 admin.site.register(Manufacturer)
@@ -9,3 +9,4 @@ admin.site.register(DAC)
 admin.site.register(AudioCodec)
 admin.site.register(OperatingSystem)
 admin.site.register(OperatingSystemVendor)
+admin.site.register(SoC)
