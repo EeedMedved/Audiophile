@@ -55,6 +55,21 @@ class DisplayResolution(models.Model):
         return '{}x{}'.format(str(self.height), str(self.width))
 
 
+class DisplayTechnology(models.Model):
+    title = models.CharField(max_length=30, verbose_name='Технология изготовления')
+    description = models.TextField(null=True, blank=True, verbose_name='Описание')
+
+    def __repr__(self):
+        return '<DisplayTechnology {}>'.format(self.title)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Технология дисплея'
+        verbose_name_plural = 'Технологии дисплея'
+
+
 class Phone(models.Model):
     SIM_CARD_NUMBER_CHOICES = [
         (1, '1'),
@@ -116,9 +131,8 @@ class Phone(models.Model):
     quick_charge_technology = models.CharField(max_length=30, null=True, blank=True)
     display_resolution = models.ForeignKey(DisplayResolution,
                                            on_delete=models.PROTECT,
-                                           verbose_name='Разрешение экрана',
-                                           null=True)
-    #display_type = models.CharField(verbose_name='Тип дисплея', max_length=50, default='IPS')
+                                           verbose_name='Разрешение экрана')
+    display_type = models.ForeignKey(DisplayTechnology, on_delete=models.PROTECT)
     #display_resolution_height = models.PositiveSmallIntegerField()
 
     def __repr__(self):
