@@ -51,6 +51,9 @@ class DisplayResolution(models.Model):
     def __repr__(self):
         return '<DisplayResolution> H:{} W:{}'.format(str(self.height), str(self.width))
 
+    def resolution(self):
+        return '{}x{}'.format(str(self.height), str(self.width))
+
 
 class Phone(models.Model):
     SIM_CARD_NUMBER_CHOICES = [
@@ -110,7 +113,11 @@ class Phone(models.Model):
     )
     is_battery_removable = models.BooleanField(verbose_name='Съемная батарея', default=False)
     has_quick_charge = models.BooleanField(verbose_name='Быстрая зарядка', default=False)
-    quick_charge_technology = models.CharField(max_length=30, null=True)
+    quick_charge_technology = models.CharField(max_length=30, null=True, blank=True)
+    display_resolution = models.ForeignKey(DisplayResolution,
+                                           on_delete=models.PROTECT,
+                                           verbose_name='Разрешение экрана',
+                                           null=True)
     #display_type = models.CharField(verbose_name='Тип дисплея', max_length=50, default='IPS')
     #display_resolution_height = models.PositiveSmallIntegerField()
 
