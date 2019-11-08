@@ -33,6 +33,25 @@ class OperatingSystem(models.Model):
         verbose_name_plural = 'Операционные системы'
 
 
+class DisplayResolution(models.Model):
+    height = models.PositiveSmallIntegerField('Высота')
+    width = models.PositiveSmallIntegerField('Ширина')
+    ratio = models.CharField(max_length=8, verbose_name='Соотношение сторон', default='16:9')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['height', 'width'], name='unique_display_resolution'),
+        ]
+        verbose_name = 'Разрешение экрана'
+        verbose_name_plural = 'Список разрешений экрана'
+
+    def __str__(self):
+        return '{}x{}'.format(str(self.height), str(self.width))
+
+    def __repr__(self):
+        return '<DisplayResolution> H:{} W:{}'.format(str(self.height), str(self.width))
+
+
 class Phone(models.Model):
     SIM_CARD_NUMBER_CHOICES = [
         (1, '1'),
@@ -74,21 +93,26 @@ class Phone(models.Model):
     thickness = models.FloatField(verbose_name='Толщина')
     ram = models.PositiveIntegerField(verbose_name='Объем ОЗУ в Мб')
     storage = models.PositiveIntegerField(verbose_name='Встроенная память в МБ')
-    soc = models.ForeignKey('SoC', on_delete=models.PROTECT)
+    soc = models.ForeignKey('SoC', on_delete=models.PROTECT, null=True)
     bluetooth_supported_versions = models.FloatField(
         verbose_name='Максимальная версия Bluetooth',
-        choices=BLUETOOTH_VERSION_CHOICES
+        choices=BLUETOOTH_VERSION_CHOICES,
+        null=True
     )
     wifi_supported_versions = models.CharField(
         max_length=15,
         choices=WIFI_VERSION_CHOICES,
+        null=True
     )
     battery_capacity = models.PositiveSmallIntegerField(
-        verbose_name='Емкость батареи'
+        verbose_name='Емкость батареи',
+        default=0
     )
-    is_battery_removable = models.BooleanField(verbose_name='Съемная батарея')
-    has_quick_charge = models.BooleanField(verbose_name='Быстрая зарядка')
+    is_battery_removable = models.BooleanField(verbose_name='Съемная батарея', default=False)
+    has_quick_charge = models.BooleanField(verbose_name='Быстрая зарядка', default=False)
     quick_charge_technology = models.CharField(max_length=30, null=True)
+    #display_type = models.CharField(verbose_name='Тип дисплея', max_length=50, default='IPS')
+    #display_resolution_height = models.PositiveSmallIntegerField()
 
     def __repr__(self):
         return '<Phone %s>' % self.title
